@@ -17,7 +17,7 @@ public class Driver {
 		textArea.setWrapStyleWord(true);
 
 		/* Add the scroll pane containing the text area to the frame
-           and set the minimum frame size. */
+        and set the minimum frame size. */
 		frame.add(scrollPane);
 		frame.setMinimumSize(new Dimension(500, 500));
 
