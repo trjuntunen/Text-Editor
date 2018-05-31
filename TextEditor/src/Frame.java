@@ -1,10 +1,6 @@
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -19,22 +15,31 @@ import javax.swing.JTextArea;
  */
 public class Frame {
 
+	/**
+	 * All of the components within the main JFrame.
+	 */
 	private JFrame frame;
 	private JTextArea textArea;
 	private JScrollPane scrollPane;
 	private TextLineNumber lineNumber;
 	private JMenuBar menuBar;
 	private JMenu menu;
-	private JMenuItem saveItem;
-
+	private JMenuItem saveAsItem;
+	private JMenuItem saveToDesktopItem;
+	private EventManager event;
+	private ImageIcon icon;
+	
 	public Frame() {
-		frame = new JFrame();
+		frame = new JFrame("TopEdit");
 		textArea = new JTextArea();
 		scrollPane = new JScrollPane(textArea);
 		lineNumber = new TextLineNumber(textArea, 0);
 		menuBar = new JMenuBar();
 		menu = new JMenu("File");
-		saveItem = new JMenuItem("Size");
+		saveAsItem = new JMenuItem("Size");
+		saveToDesktopItem = new JMenuItem();
+		event = new EventManager();
+		icon = new ImageIcon("D:\\java-oxygen\\text-editor\\Text-Editor\\TextEditor\\images\\toptexticon.png");
 	}
 
 	/**
@@ -68,6 +73,7 @@ public class Frame {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(scrollPane);
+		frame.setIconImage(icon.getImage());
 		frame.setMinimumSize(new Dimension(600, 400));
 		frame.pack();
 	}
@@ -85,19 +91,15 @@ public class Frame {
 	 * Sets up the menu bar for drop down menu options.
 	 */
 	private void setupMenuBar() {
-		saveItem = menu.add("Save file to Desktop");
-
-		saveItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				String currentText = textArea.getText();
-				try(FileWriter writer = new FileWriter(new File("C:\\Users\\epbba\\Desktop\\Poppers.java"))) {
-					writer.write(currentText);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		/* Create 'save file as' MenuItem. */
+		saveAsItem = menu.add("Save file as");
+		event.addEventToFileSaveMenuItem(saveAsItem, textArea);
 		
+		/* Create 'save to desktop' MenuItem */
+		saveToDesktopItem = menu.add("Save to desktop");
+		event.addEventToSaveToDesktop(saveToDesktopItem, textArea);
+		
+		/* Add the menu to the menuBar and then add it to the frame. */
 		menuBar.add(menu);
 		frame.setJMenuBar(menuBar);
 	}
