@@ -1,4 +1,7 @@
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -83,8 +86,12 @@ public class Frame {
 	 */
 	private void setupTextArea() {
 		textArea.setBorder(BorderFactory.createCompoundBorder(textArea.getBorder(), BorderFactory.createEmptyBorder(0, 5, 0, 0)));
+		textArea.setFont(textArea.getFont().deriveFont(14f));
+		Font font = new Font("Consolas", Font.PLAIN, 14);
+		textArea.setFont(font);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
+		event.addDocumentListenerToTextArea(textArea);
 	}
 
 	/**
