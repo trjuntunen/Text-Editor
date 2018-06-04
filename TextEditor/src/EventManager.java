@@ -3,7 +3,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import javax.swing.AbstractAction;
 import javax.swing.InputMap;
 import javax.swing.JMenuItem;
@@ -35,10 +34,10 @@ public class EventManager {
 	public void addEventToFileSaveMenuItem(JMenuItem saveItem, JTextArea textArea) {
 
 		saveItem.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        String path = JOptionPane.showInputDialog("Enter the location to save the file.");
-		        
-		        if(path != null) {
+			public void actionPerformed(ActionEvent e) {
+				String path = JOptionPane.showInputDialog("Enter the location to save the file.");
+
+				if(path != null) {
 					String currentText = textArea.getText();
 					try(FileWriter writer = new FileWriter(new File(path))) {
 						writer.write(currentText);
@@ -46,11 +45,11 @@ public class EventManager {
 					} catch (IOException event) {
 						event.printStackTrace();
 					}
-		        }
-		    }
+				}
+			}
 		});
 	}
-	
+
 	/**
 	 * Adds the action listener to the "save to desktop" menu item from the MenuBar
 	 * drop down menu.
@@ -61,10 +60,10 @@ public class EventManager {
 	 */
 	public void addEventToSaveToDesktop(JMenuItem saveToDesktopItem, JTextArea textArea) {
 		saveToDesktopItem.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        String path = "C:\\Users\\epbba\\Desktop\\Driver.java";
-		        
-		        if(path != null) {
+			public void actionPerformed(ActionEvent e) {
+				String path = "C:\\Users\\epbba\\Desktop\\Driver.java";
+
+				if(path != null) {
 					String currentText = textArea.getText();
 					try(FileWriter writer = new FileWriter(new File(path))) {
 						writer.write(currentText);
@@ -72,11 +71,11 @@ public class EventManager {
 					} catch (IOException event) {
 						event.printStackTrace();
 					}
-		        }
-		    }
+				}
+			}
 		});
 	}
-	
+
 	/**
 	 * Function that adds a document listener to the text area
 	 * for auto complete functionality with brackets.
@@ -87,37 +86,33 @@ public class EventManager {
 		textArea.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				// do nothing as of now.
-			}
+			public void changedUpdate(DocumentEvent arg0) {}
 
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
-                Runnable curlyBracketAutoComplete = new Runnable() {
-                    @Override
-                    public void run() {
-        				Document doc = textArea.getDocument();
-        				try {
-        					String lastCharAsString = doc.getText(doc.getLength() - 1, 1);
-        					if(lastCharAsString.equals("{")) {
-        						textArea.append("\n\n" + "}");
-        						textArea.setCaretPosition(textArea.getDocument().getLength());
-        					}
-        				} catch (BadLocationException e) {
-        					e.printStackTrace();
-        				}
-                    }
-                };
-                SwingUtilities.invokeLater(curlyBracketAutoComplete);
+				Runnable curlyBracketAutoComplete = new Runnable() {
+					@Override
+					public void run() {
+						Document doc = textArea.getDocument();
+						try {
+							String lastCharAsString = doc.getText(doc.getLength() - 1, 1);
+							if(lastCharAsString.equals("{")) {
+								textArea.append("\n\n" + "}");
+								textArea.setCaretPosition(textArea.getDocument().getLength());
+							}
+						} catch (BadLocationException e) {
+							e.printStackTrace();
+						}
+					}
+				};
+				SwingUtilities.invokeLater(curlyBracketAutoComplete);
 			}
 
 			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				// do nothing as of now.
-			}
+			public void removeUpdate(DocumentEvent arg0) {}
 
 		});
-		
+
 	}
-	
+
 }
